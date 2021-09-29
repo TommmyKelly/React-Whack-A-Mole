@@ -1,4 +1,4 @@
-import { TIME, SCORE, DECREMENT, ACTIVE_ID } from "../actions/types";
+import { DECREMENT, ACTIVE_ID } from "../actions/types";
 import store from "../store";
 
 let timeInterval;

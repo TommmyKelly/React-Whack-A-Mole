@@ -1,15 +1,17 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import "../App.css";
 import { useSelector, useDispatch } from "react-redux";
 import allActions from "../actions/actions";
-import { SCORE } from "../actions/types";
+import { GAME_ON, SCORE, RESET } from "../actions/types";
 const Board = () => {
   const dispatch = useDispatch();
 
-  const { activeID, time, score } = useSelector((state) => state.game);
+  const { activeID, time, score, gameOn } = useSelector((state) => state.game);
 
   const start = () => {
     dispatch(allActions.decrement(false, activeID));
+    dispatch({ type: GAME_ON });
+    dispatch({ type: RESET });
   };
 
   const reset = () => {
@@ -26,14 +28,20 @@ const Board = () => {
   useEffect(() => {
     if (time === 0) {
       dispatch(allActions.decrement(true));
+      dispatch({ type: GAME_ON });
     }
+    // eslint-disable-next-line
   }, [time]);
 
   return (
     <div style={styles.main}>
       <h1>{time}</h1>
       <h1>{score}</h1>
-      <button style={styles.start_button} onClick={start}>
+      <button
+        style={styles.start_button}
+        onClick={start}
+        className={gameOn ? "hide" : null}
+      >
         Start
       </button>
       <button style={styles.start_button} onClick={reset}>

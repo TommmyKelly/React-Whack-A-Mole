@@ -1,9 +1,10 @@
-import { TIME, SCORE, DECREMENT, ACTIVE_ID } from "../actions/types";
+import { SCORE, DECREMENT, ACTIVE_ID, GAME_ON, RESET } from "../actions/types";
 
 const initialState = {
   time: 60,
   score: 0,
   activeID: 0,
+  gameOn: false,
 };
 
 const gamePlay = (state = initialState, action) => {
@@ -22,6 +23,18 @@ const gamePlay = (state = initialState, action) => {
       return {
         ...state,
         score: state.score + 1,
+      };
+    case GAME_ON: {
+      return {
+        ...state,
+        gameOn: !state.gameOn,
+      };
+    }
+    case RESET:
+      return {
+        ...state,
+        time: 60,
+        score: 0,
       };
     default:
       return state;
