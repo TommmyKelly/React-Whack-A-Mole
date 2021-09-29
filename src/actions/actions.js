@@ -16,7 +16,7 @@ const getRandomID = (id) => {
 
 const decrement =
   (stop = false) =>
-  async (dispatch) => {
+  (dispatch) => {
     if (!stop) {
       timeInterval = setInterval(() => {
         const state = store.getState();
@@ -32,8 +32,23 @@ const decrement =
     }
   };
 
+const increaseSpeed = (speed) => (dispatch) => {
+  console.log(speed);
+  clearInterval(timeInterval);
+  timeInterval = setInterval(() => {
+    const state = store.getState();
+
+    dispatch({ type: DECREMENT });
+    dispatch({
+      type: ACTIVE_ID,
+      payload: getRandomID(state.game.activeID),
+    });
+  }, speed);
+};
+
 const allActions = {
   decrement,
+  increaseSpeed,
 };
 
 export default allActions;

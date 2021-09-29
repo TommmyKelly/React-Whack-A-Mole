@@ -14,10 +14,6 @@ const Board = () => {
     dispatch({ type: RESET });
   };
 
-  const reset = () => {
-    dispatch(allActions.decrement(true));
-  };
-
   const handleClick = (e) => {
     if (e.target.className === "box active") {
       dispatch({ type: SCORE });
@@ -33,19 +29,25 @@ const Board = () => {
     // eslint-disable-next-line
   }, [time]);
 
+  useEffect(() => {
+    if (score >= 15) {
+      dispatch(allActions.increaseSpeed(600));
+    } else if (score >= 10) {
+      dispatch(allActions.increaseSpeed(700));
+    }
+    // eslint-disable-next-line
+  }, [score]);
+
   return (
     <div style={styles.main}>
-      <h1>{time}</h1>
-      <h1>{score}</h1>
+      <h1 style={styles.h1}>Time: {time}</h1>
+      <h1 style={styles.h1}>Score: {score}</h1>
       <button
         style={styles.start_button}
         onClick={start}
         className={gameOn ? "hide" : null}
       >
         Start
-      </button>
-      <button style={styles.start_button} onClick={reset}>
-        Reset
       </button>
 
       <div style={styles.container}>
@@ -131,7 +133,14 @@ const styles = {
     gap: 20,
   },
   start_button: {
-    marginBottom: 20,
+    backgroundColor: "#FCBC5C",
+    marginBottom: "1rem",
+    border: "1px solid white",
+    width: "15%",
+    padding: "1rem",
+    cursor: "pointer",
+    borderRadius: "100px 100px",
+    color: "#fff",
   },
 };
 

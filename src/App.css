@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Titan+One&display=swap");
+
 .box {
   background-image: url("/src/images/mole.png");
   object-position: center center;
@@ -23,4 +25,11 @@
   background-repeat: no-repeat;
   height: 100vh;
   width: 100vw;
+}
+h1 {
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+  font-family: "Titan One", cursive;
+  margin-bottom: 20px;
+  color: #fff;
 }

@@ -28,6 +28,7 @@ const gamePlay = (state = initialState, action) => {
       return {
         ...state,
         gameOn: !state.gameOn,
+        activeID: 0,
       };
     }
     case RESET:
