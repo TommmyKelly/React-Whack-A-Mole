@@ -1,46 +1,55 @@
 import { useState, useEffect } from "react";
 import "../App.css";
-
+import { useSelector, useDispatch } from "react-redux";
+import allActions from "../actions/actions";
 const Board = () => {
-  const [score, setScore] = useState(0);
-  const [activeID, setActiveID] = useState(0);
-  const [time, setTime] = useState(10);
-  const [moleInterval, setMoleInterval] = useState(null);
-  const [timeInterval, setTimeInterval] = useState(null);
+  // const [score, setScore] = useState(0);
+  // const [activeID, setActiveID] = useState(0);
+  // const [time, setTime] = useState(10);
+  // const [moleInterval, setMoleInterval] = useState(null);
+  // const [timeInterval, setTimeInterval] = useState(null);
+  const dispatch = useDispatch();
 
   const start = () => {
-    setScore(0);
-    setTime(10);
-    setMoleInterval(
-      setInterval(() => {
-        setActiveID(Math.floor(Math.random() * 12 + 1));
-      }, 1000)
-    );
-    setTimeInterval(
-      setInterval(() => {
-        setTime((preTime) => preTime - 1);
-      }, 1000)
-    );
+    // setScore(0);
+    // setTime(10);
+    // setMoleInterval(
+    //   setInterval(() => {
+    //     setActiveID(Math.floor(Math.random() * 12 + 1));
+    //   }, 1000)
+    dispatch(allActions.decrement());
   };
+  //   setTimeInterval(
+  //     setInterval(() => {
+  //       setTime((preTime) => preTime - 1);
+  //     }, 1000)
+  //   );
+  // };
+
+  const reset = () => {
+    dispatch(allActions.decrement(true));
+  };
+
+  const { activeID, time, score } = useSelector((state) => state.game);
 
   const handleClick = (e) => {
     if (e.target.className === "box active") {
-      setScore(score + 1);
+      // setScore(score + 1);
       e.target.classList.remove("active");
     }
   };
 
-  const stopGame = () => {
-    clearInterval(moleInterval);
-  };
+  // const stopGame = () => {
+  //   clearInterval(moleInterval);
+  // };
 
-  useEffect(() => {
-    if (time === 0) {
-      clearInterval(moleInterval);
-      clearInterval(timeInterval);
-      setActiveID(0);
-    }
-  }, [time]);
+  // useEffect(() => {
+  //   if (time === 0) {
+  //     clearInterval(moleInterval);
+  //     clearInterval(timeInterval);
+  //     setActiveID(0);
+  //   }
+  // }, [time]);
 
   return (
     <div style={styles.main}>
@@ -48,6 +57,9 @@ const Board = () => {
       <h1>{score}</h1>
       <button style={styles.start_button} onClick={start}>
         Start
+      </button>
+      <button style={styles.start_button} onClick={reset}>
+        Reset
       </button>
 
       <div style={styles.container}>
