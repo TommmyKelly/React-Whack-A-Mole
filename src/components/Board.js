@@ -42,11 +42,7 @@ const Board = () => {
     <div style={styles.main}>
       <h1 style={styles.h1}>Time: {time}</h1>
       <h1 style={styles.h1}>Score: {score}</h1>
-      <button
-        style={styles.start_button}
-        onClick={start}
-        className={gameOn ? "hide" : null}
-      >
+      <button onClick={start} className={`${gameOn ? "hide" : null} btn`}>
         Start
       </button>
 

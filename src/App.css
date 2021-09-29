@@ -18,6 +18,26 @@
   visibility: hidden;
 }
 
+.btn {
+  background-color: #fcbc5c;
+  margin-bottom: 1rem;
+  border: 1px solid white;
+  width: 15%;
+  text-align: center;
+  padding: 1rem;
+  cursor: pointer;
+  transition-property: background-color, color;
+  transition-duration: 0.5s;
+  transition-timing-function: ease-in-out;
+  border-radius: 100px 100px;
+}
+
+.btn:hover,
+.log-out:hover {
+  background: #4e9a27;
+  color: #fff;
+}
+
 .layout {
   background-image: url("./images/country.png");
   object-position: center center;
