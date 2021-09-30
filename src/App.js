@@ -2,7 +2,6 @@ import "./App.css";
 import Board from "./components/Board";
 import Layout from "./components/Layout";
 import Login from "./components/Login";
-import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -19,7 +18,9 @@ function App() {
   if (error) {
     return (
       <div>
-        <p>Error: {error}</p>
+        <Layout>
+          <p>Error: {error}</p>
+        </Layout>
       </div>
     );
   }

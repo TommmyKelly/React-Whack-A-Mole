@@ -35,17 +35,12 @@ const Board = () => {
       e.target.classList.remove("active");
     }
   };
-  useEffect(() => {
-    getData();
-  }, []);
 
   useEffect(() => {
     if (time === 0) {
       dispatch(allActions.decrement(true));
       dispatch({ type: GAME_ON });
       submit();
-      console.log(111);
-      getData();
     }
     // eslint-disable-next-line
   }, [time]);
@@ -73,13 +68,30 @@ const Board = () => {
     update(ref(db), updates);
   };
 
-  const getData = async () => {
-    // const dbRef = ref(getDatabase());
-    // get(child(dbRef, "scores"))
-    //   .once()
-    //   .then((snapshot) => {
-    //     dispatch({ type: DB_SCORES, payload: snapshot.val() });
-    //   });
+  const sorted = (data) => {
+    const keys = Object.keys(data);
+    const arr = [];
+    for (let i = 0; i < keys.length; i++) {
+      const k = keys[i];
+      const s = data[k].score;
+      const ts = data[k].timestamp;
+
+      arr.push({
+        score: s,
+        timestamp: ts,
+      });
+    }
+
+    return arr.sort((a, b) => (a.score < b.score ? 1 : -1));
+  };
+
+  const getData = () => {
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, "scores")).then((snapshot) => {
+      const data = snapshot.val();
+
+      dispatch({ type: DB_SCORES, payload: sorted(data) });
+    });
   };
 
   const signOutUser = () => {
@@ -101,7 +113,7 @@ const Board = () => {
       </button>
 
       <button onClick={signOutUser} className={`${gameOn ? "hide" : null} btn`}>
-        Submit
+        sign Out
       </button>
 
       <div style={styles.container}>
