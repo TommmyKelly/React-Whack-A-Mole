@@ -1,10 +1,18 @@
-import { SCORE, DECREMENT, ACTIVE_ID, GAME_ON, RESET } from "../actions/types";
+import {
+  SCORE,
+  DECREMENT,
+  ACTIVE_ID,
+  GAME_ON,
+  RESET,
+  DB_SCORES,
+} from "../actions/types";
 
 const initialState = {
-  time: 60,
+  time: 5,
   score: 0,
   activeID: 0,
   gameOn: false,
+  db_scores: [],
 };
 
 const gamePlay = (state = initialState, action) => {
@@ -31,10 +39,15 @@ const gamePlay = (state = initialState, action) => {
         activeID: 0,
       };
     }
+    case DB_SCORES:
+      return {
+        ...state,
+        db_scores: action.payload,
+      };
     case RESET:
       return {
         ...state,
-        time: 60,
+        time: 5,
         score: 0,
       };
     default:

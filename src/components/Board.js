@@ -1,8 +1,23 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "../App.css";
 import { useSelector, useDispatch } from "react-redux";
 import allActions from "../actions/actions";
-import { GAME_ON, SCORE, RESET } from "../actions/types";
+import { GAME_ON, SCORE, RESET, DB_SCORES } from "../actions/types";
+
+import { db, auth } from "../firebase";
+
+import {
+  getDatabase,
+  ref,
+  set,
+  push,
+  child,
+  update,
+  get,
+  serverTimestamp,
+} from "firebase/database";
+import { signOut } from "firebase/auth";
+
 const Board = () => {
   const dispatch = useDispatch();
 
@@ -20,11 +35,17 @@ const Board = () => {
       e.target.classList.remove("active");
     }
   };
+  useEffect(() => {
+    getData();
+  }, []);
 
   useEffect(() => {
     if (time === 0) {
       dispatch(allActions.decrement(true));
       dispatch({ type: GAME_ON });
+      submit();
+      console.log(111);
+      getData();
     }
     // eslint-disable-next-line
   }, [time]);
@@ -35,8 +56,41 @@ const Board = () => {
     } else if (score >= 10) {
       dispatch(allActions.increaseSpeed(700));
     }
-    // eslint-disable-next-line
+    // eslint-disable-next-lin
   }, [score]);
+
+  const submit = () => {
+    const newData = {
+      score,
+      timestamp: serverTimestamp(),
+    };
+
+    const newScoreKey = push(child(ref(db), "scores")).key;
+    const updates = {};
+    updates["/scores/" + newScoreKey] = newData;
+
+    console.log("update", updates);
+    update(ref(db), updates);
+  };
+
+  const getData = async () => {
+    // const dbRef = ref(getDatabase());
+    // get(child(dbRef, "scores"))
+    //   .once()
+    //   .then((snapshot) => {
+    //     dispatch({ type: DB_SCORES, payload: snapshot.val() });
+    //   });
+  };
+
+  const signOutUser = () => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+      })
+      .catch((error) => {
+        // An error happened.
+      });
+  };
 
   return (
     <div style={styles.main}>
@@ -44,6 +98,10 @@ const Board = () => {
       <h1 style={styles.h1}>Score: {score}</h1>
       <button onClick={start} className={`${gameOn ? "hide" : null} btn`}>
         Start
+      </button>
+
+      <button onClick={signOutUser} className={`${gameOn ? "hide" : null} btn`}>
+        Submit
       </button>
 
       <div style={styles.container}>
