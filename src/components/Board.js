@@ -7,15 +7,15 @@ import { GAME_ON, SCORE, RESET, DB_SCORES } from "../actions/types";
 import { db, auth } from "../firebase";
 
 import {
-  getDatabase,
-  ref,
-  set,
-  push,
-  child,
-  update,
-  get,
+  addDoc,
+  collection,
+  getDocs,
   serverTimestamp,
-} from "firebase/database";
+  query,
+  orderBy,
+  limit,
+} from "firebase/firestore";
+
 import { signOut } from "firebase/auth";
 
 const Board = () => {
@@ -54,44 +54,23 @@ const Board = () => {
     // eslint-disable-next-lin
   }, [score]);
 
-  const submit = () => {
-    const newData = {
+  const submit = async () => {
+    const docRef = await addDoc(collection(db, "leaderBoard"), {
       score,
       timestamp: serverTimestamp(),
-    };
-
-    const newScoreKey = push(child(ref(db), "scores")).key;
-    const updates = {};
-    updates["/scores/" + newScoreKey] = newData;
-
-    console.log("update", updates);
-    update(ref(db), updates);
-  };
-
-  const sorted = (data) => {
-    const keys = Object.keys(data);
-    const arr = [];
-    for (let i = 0; i < keys.length; i++) {
-      const k = keys[i];
-      const s = data[k].score;
-      const ts = data[k].timestamp;
-
-      arr.push({
-        score: s,
-        timestamp: ts,
-      });
-    }
-
-    return arr.sort((a, b) => (a.score < b.score ? 1 : -1));
-  };
-
-  const getData = () => {
-    const dbRef = ref(getDatabase());
-    get(child(dbRef, "scores")).then((snapshot) => {
-      const data = snapshot.val();
-
-      dispatch({ type: DB_SCORES, payload: sorted(data) });
     });
+  };
+
+  const getData = async () => {
+    const messageRef = collection(db, "leaderBoard");
+    const q = query(messageRef, orderBy("score", "desc"), limit(2));
+    const queryData = await getDocs(q);
+    const data = [];
+    queryData.forEach((doc) => {
+      data.push(doc.data());
+    });
+
+    dispatch({ type: DB_SCORES, payload: data });
   };
 
   const signOutUser = () => {
