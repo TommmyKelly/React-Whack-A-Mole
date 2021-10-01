@@ -1,27 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "../App.css";
 import { useSelector, useDispatch } from "react-redux";
 import allActions from "../actions/actions";
-import { GAME_ON, SCORE, RESET, DB_SCORES } from "../actions/types";
-
+import { GAME_ON, SCORE, RESET, SHOW_MODAL } from "../actions/types";
 import { db, auth } from "../firebase";
-
-import {
-  addDoc,
-  collection,
-  getDocs,
-  serverTimestamp,
-  query,
-  orderBy,
-  limit,
-} from "firebase/firestore";
-
+import Modal from "./Modal";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { signOut } from "firebase/auth";
 
 const Board = () => {
   const dispatch = useDispatch();
 
-  const { activeID, time, score, gameOn } = useSelector((state) => state.game);
+  const { activeID, time, score, gameOn, showModal } = useSelector(
+    (state) => state.game
+  );
 
   const start = () => {
     dispatch(allActions.decrement(false, activeID));
@@ -61,18 +53,6 @@ const Board = () => {
     });
   };
 
-  const getData = async () => {
-    const messageRef = collection(db, "leaderBoard");
-    const q = query(messageRef, orderBy("score", "desc"), limit(2));
-    const queryData = await getDocs(q);
-    const data = [];
-    queryData.forEach((doc) => {
-      data.push(doc.data());
-    });
-
-    dispatch({ type: DB_SCORES, payload: data });
-  };
-
   const signOutUser = () => {
     signOut(auth)
       .then(() => {
@@ -85,6 +65,7 @@ const Board = () => {
 
   return (
     <div style={styles.main}>
+      {showModal && <Modal />}
       <h1 style={styles.h1}>Time: {time}</h1>
       <h1 style={styles.h1}>Score: {score}</h1>
       <button onClick={start} className={`${gameOn ? "hide" : null} btn`}>
@@ -93,6 +74,13 @@ const Board = () => {
 
       <button onClick={signOutUser} className={`${gameOn ? "hide" : null} btn`}>
         sign Out
+      </button>
+
+      <button
+        onClick={() => dispatch({ type: SHOW_MODAL })}
+        className={`${gameOn ? "hide" : null} btn`}
+      >
+        LeaderBoard
       </button>
 
       <div style={styles.container}>

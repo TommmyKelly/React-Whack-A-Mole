@@ -5,6 +5,7 @@ import {
   GAME_ON,
   RESET,
   DB_SCORES,
+  SHOW_MODAL,
 } from "../actions/types";
 
 const initialState = {
@@ -13,6 +14,7 @@ const initialState = {
   activeID: 0,
   gameOn: false,
   db_scores: [],
+  showModal: false,
 };
 
 const gamePlay = (state = initialState, action) => {
@@ -49,6 +51,11 @@ const gamePlay = (state = initialState, action) => {
         ...state,
         time: 5,
         score: 0,
+      };
+    case SHOW_MODAL:
+      return {
+        ...state,
+        showModal: !state.showModal,
       };
     default:
       return state;
