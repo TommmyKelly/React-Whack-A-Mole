@@ -6,6 +6,7 @@ import {
   RESET,
   DB_SCORES,
   SHOW_MODAL,
+  USER,
 } from "../actions/types";
 
 const initialState = {
@@ -15,6 +16,7 @@ const initialState = {
   gameOn: false,
   db_scores: [],
   showModal: false,
+  user: {},
 };
 
 const gamePlay = (state = initialState, action) => {
@@ -56,6 +58,11 @@ const gamePlay = (state = initialState, action) => {
       return {
         ...state,
         showModal: !state.showModal,
+      };
+    case USER:
+      return {
+        ...state,
+        user: action.payload,
       };
     default:
       return state;

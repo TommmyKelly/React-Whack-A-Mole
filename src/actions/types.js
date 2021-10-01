@@ -6,3 +6,4 @@ export const GAME_ON = "GAME_ON";
 export const RESET = "RESET";
 export const DB_SCORES = "DB_SCORES";
 export const SHOW_MODAL = "SHOE_MODAL";
+export const USER = "USER";

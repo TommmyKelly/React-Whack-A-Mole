@@ -2,22 +2,23 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCaynBnVOWZF96_BBIzLnZIqn1WQUGuKAw",
-  authDomain: "whack-a-mole-e7087.firebaseapp.com",
-  databaseURL: "https://whack-a-mole-e7087.firebaseio.com",
-  projectId: "whack-a-mole-e7087",
-  storageBucket: "whack-a-mole-e7087.appspot.com",
-  messagingSenderId: "438743682474",
-  appId: "1:438743682474:web:7d2e3fd86fd172aec06fd3",
+  apiKey: "AIzaSyALnNzwp49-kF2fGtJQrTL7ZLPZ4x4TbqI",
+  authDomain: "yt-demo-5b41f.firebaseapp.com",
+  projectId: "yt-demo-5b41f",
+  storageBucket: "yt-demo-5b41f.appspot.com",
+  messagingSenderId: "519328294498",
+  appId: "1:519328294498:web:ddf5cc08e81540e05d933b",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
 const db = getFirestore();
 const auth = getAuth();
 
