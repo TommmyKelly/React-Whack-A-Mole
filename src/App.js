@@ -4,9 +4,22 @@ import Layout from "./components/Layout";
 import Login from "./components/Login";
 import { auth } from "./firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useDispatch } from "react-redux";
+import { USER } from "./actions/types";
+import { useEffect } from "react";
 
 function App() {
   const [user, loading, error] = useAuthState(auth);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({
+      type: USER,
+      payload: {
+        name: user?.displayName,
+        img: user?.photoURL,
+      },
+    });
+  }, user);
 
   if (loading) {
     return (

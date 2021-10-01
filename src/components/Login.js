@@ -1,10 +1,7 @@
 import { auth } from "../firebase";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { useDispatch } from "react-redux";
-import { USER } from "../actions/types";
 
 const Login = () => {
-  const dispatch = useDispatch();
   const onClick = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
@@ -14,13 +11,6 @@ const Login = () => {
         const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
-        dispatch({
-          type: USER,
-          payload: {
-            name: user.displayName,
-            img: user.photoURL,
-          },
-        });
 
         // ...
       })

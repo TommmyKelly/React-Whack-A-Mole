@@ -11,7 +11,7 @@ import { signOut } from "firebase/auth";
 const Board = () => {
   const dispatch = useDispatch();
 
-  const { activeID, time, score, gameOn, showModal } = useSelector(
+  const { activeID, time, score, gameOn, showModal, user } = useSelector(
     (state) => state.game
   );
 
@@ -50,6 +50,8 @@ const Board = () => {
     const docRef = await addDoc(collection(db, "leaderBoard"), {
       score,
       timestamp: serverTimestamp(),
+      user: user.name,
+      userImg: user.img,
     });
   };
 
@@ -66,6 +68,8 @@ const Board = () => {
   return (
     <div style={styles.main}>
       {showModal && <Modal />}
+      <img src={user?.img} />
+      <h1>{user?.name}</h1>
       <h1 style={styles.h1}>Time: {time}</h1>
       <h1 style={styles.h1}>Score: {score}</h1>
       <button onClick={start} className={`${gameOn ? "hide" : null} btn`}>
