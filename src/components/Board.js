@@ -16,8 +16,6 @@ import { signOut } from "firebase/auth";
 import molespeech from "../images/molespeech.png";
 
 const Board = () => {
-  let timeOutPopUP;
-
   const dispatch = useDispatch();
 
   const { activeID, time, score, gameOn, showModal, user, showPopUp } =
@@ -39,7 +37,7 @@ const Board = () => {
         const audio = new Audio("/laugh.mp3");
         audio.play();
         dispatch({ type: SHOW_POP_UP });
-        timeOutPopUP = setTimeout(() => {
+        setTimeout(() => {
           dispatch({ type: SHOW_POP_UP });
         }, 600);
       }
