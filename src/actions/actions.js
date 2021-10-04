@@ -4,7 +4,6 @@ import store from "../store";
 let timeInterval;
 
 const getRandomID = (id) => {
-  console.log("Start");
   const randomNum = Math.floor(Math.random() * 12 + 1);
 
   if (randomNum === id) {
@@ -33,7 +32,6 @@ const decrement =
   };
 
 const increaseSpeed = (speed) => (dispatch) => {
-  console.log(speed);
   clearInterval(timeInterval);
   timeInterval = setInterval(() => {
     const state = store.getState();

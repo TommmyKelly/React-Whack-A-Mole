@@ -1,19 +1,27 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "../App.css";
 import { useSelector, useDispatch } from "react-redux";
 import allActions from "../actions/actions";
-import { GAME_ON, SCORE, RESET, SHOW_MODAL } from "../actions/types";
+import {
+  GAME_ON,
+  SCORE,
+  RESET,
+  SHOW_MODAL,
+  SHOW_POP_UP,
+} from "../actions/types";
 import { db, auth } from "../firebase";
 import Modal from "./Modal";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { signOut } from "firebase/auth";
+import molespeech from "../images/molespeech.png";
 
 const Board = () => {
+  let timeOutPopUP;
+
   const dispatch = useDispatch();
 
-  const { activeID, time, score, gameOn, showModal, user } = useSelector(
-    (state) => state.game
-  );
+  const { activeID, time, score, gameOn, showModal, user, showPopUp } =
+    useSelector((state) => state.game);
 
   const start = () => {
     dispatch(allActions.decrement(false, activeID));
@@ -25,6 +33,16 @@ const Board = () => {
     if (e.target.className === "box active") {
       dispatch({ type: SCORE });
       e.target.classList.remove("active");
+    }
+    if (e.target.className === "box false" && gameOn) {
+      if (!showPopUp) {
+        const audio = new Audio("/laugh.mp3");
+        audio.play();
+        dispatch({ type: SHOW_POP_UP });
+        timeOutPopUP = setTimeout(() => {
+          dispatch({ type: SHOW_POP_UP });
+        }, 600);
+      }
     }
   };
 
@@ -89,66 +107,59 @@ const Board = () => {
 
       <div style={styles.container}>
         <div
-          id='1'
           className={`box ${activeID === 1 && "active"}`}
           onClick={(e) => handleClick(e)}
         ></div>
         <div
-          id='2'
           className={`box ${activeID === 2 && "active"}`}
           onClick={(e) => handleClick(e)}
         ></div>
         <div
-          id='3'
           className={`box ${activeID === 3 && "active"}`}
           onClick={(e) => handleClick(e)}
         ></div>
         <div
-          id='4'
           className={`box ${activeID === 4 && "active"}`}
           onClick={(e) => handleClick(e)}
         ></div>
         <div
-          id='5'
           className={`box ${activeID === 5 && "active"}`}
           onClick={(e) => handleClick(e)}
         ></div>
         <div
-          id='6'
           className={`box ${activeID === 6 && "active"}`}
           onClick={(e) => handleClick(e)}
         ></div>
         <div
-          id='7'
           className={`box ${activeID === 7 && "active"}`}
           onClick={(e) => handleClick(e)}
         ></div>
         <div
-          id='8'
           className={`box ${activeID === 8 && "active"}`}
           onClick={(e) => handleClick(e)}
         ></div>
         <div
-          id='9'
           className={`box ${activeID === 9 && "active"}`}
           onClick={(e) => handleClick(e)}
         ></div>
         <div
-          id='10'
           className={`box ${activeID === 10 && "active"}`}
           onClick={(e) => handleClick(e)}
         ></div>
         <div
-          id='11'
           className={`box ${activeID === 11 && "active"}`}
           onClick={(e) => handleClick(e)}
         ></div>
         <div
-          id='12'
           className={`box ${activeID === 12 && "active"}`}
           onClick={(e) => handleClick(e)}
         ></div>
       </div>
+      <img
+        style={!showPopUp ? styles.popup : styles.showPopUp}
+        src={molespeech}
+        alt=''
+      />
     </div>
   );
 };
@@ -167,7 +178,6 @@ const styles = {
     height: 400,
     display: "flex",
     flexWrap: "wrap",
-    gap: 20,
   },
   start_button: {
     backgroundColor: "#FCBC5C",
@@ -178,6 +188,24 @@ const styles = {
     cursor: "pointer",
     borderRadius: "100px 100px",
     color: "#fff",
+  },
+  popup: {
+    height: 300,
+    width: 200,
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    transition: "transform 1s",
+    transform: `translateY(100%)`,
+  },
+  showPopUp: {
+    height: 300,
+    width: 200,
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    transition: "transform 1s",
+    // transform: `translateY(100%)`,
   },
 };
 

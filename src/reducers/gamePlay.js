@@ -7,16 +7,18 @@ import {
   DB_SCORES,
   SHOW_MODAL,
   USER,
+  SHOW_POP_UP,
 } from "../actions/types";
 
 const initialState = {
-  time: 5,
+  time: 30,
   score: 0,
   activeID: 0,
   gameOn: false,
   db_scores: [],
   showModal: false,
   user: {},
+  showPopUp: false,
 };
 
 const gamePlay = (state = initialState, action) => {
@@ -51,7 +53,7 @@ const gamePlay = (state = initialState, action) => {
     case RESET:
       return {
         ...state,
-        time: 5,
+        time: 30,
         score: 0,
       };
     case SHOW_MODAL:
@@ -63,6 +65,11 @@ const gamePlay = (state = initialState, action) => {
       return {
         ...state,
         user: action.payload,
+      };
+    case SHOW_POP_UP:
+      return {
+        ...state,
+        showPopUp: !state.showPopUp,
       };
     default:
       return state;

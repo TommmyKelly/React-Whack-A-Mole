@@ -24,7 +24,9 @@ function App() {
   if (loading) {
     return (
       <div>
-        <Layout />
+        <Layout>
+          <p>Loading</p>
+        </Layout>
       </div>
     );
   }

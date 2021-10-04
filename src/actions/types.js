@@ -7,3 +7,4 @@ export const RESET = "RESET";
 export const DB_SCORES = "DB_SCORES";
 export const SHOW_MODAL = "SHOE_MODAL";
 export const USER = "USER";
+export const SHOW_POP_UP = "SHOW_POP_UP";
