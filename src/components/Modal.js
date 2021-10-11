@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { db } from "../firebase";
 import { collection, getDocs, query, orderBy, limit } from "firebase/firestore";
+import BoardItem from "./BoardItem";
 
 const Modal = () => {
   const dispatch = useDispatch();
@@ -11,7 +12,7 @@ const Modal = () => {
 
   const getData = async () => {
     const messageRef = collection(db, "leaderBoard");
-    const q = query(messageRef, orderBy("score", "desc"), limit(2));
+    const q = query(messageRef, orderBy("score", "desc"), limit(10));
     const queryData = await getDocs(q);
     const data = [];
     queryData.forEach((doc) => {
@@ -26,7 +27,8 @@ const Modal = () => {
   };
 
   useEffect(() => {
-    // getData();
+    getData();
+    // eslint-disable-next-line
   }, []);
   return (
     <div
@@ -35,9 +37,16 @@ const Modal = () => {
       onClick={(e) => closeModal(e)}
     >
       <div className='modal-content' style={styles.modalContent}>
-        <button className='btn' onClick={() => dispatch({ type: SHOW_MODAL })}>
+        <button
+          style={styles.btn}
+          className='btn'
+          onClick={() => dispatch({ type: SHOW_MODAL })}
+        >
           Close
         </button>
+        {db_scores?.map((item, index) => (
+          <BoardItem item={item} index={index} />
+        ))}
       </div>
     </div>
   );
@@ -54,13 +63,19 @@ const styles = {
     paddingTop: 100,
   },
   modalContent: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
     width: "80%",
     padding: 20,
     margin: "auto",
     backgroundColor: "#fefefe",
-    height: "70vh",
-    overflow: "hidden",
-    overflowY: "scroll",
+    height: "80vh",
+    borderRadius: 30,
+  },
+  btn: {
+    alignSelf: "end",
   },
 };
 

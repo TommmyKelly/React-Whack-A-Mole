@@ -1,47 +1,26 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "../App.css";
 import { useSelector, useDispatch } from "react-redux";
 import allActions from "../actions/actions";
-import {
-  GAME_ON,
-  SCORE,
-  RESET,
-  SHOW_MODAL,
-  SHOW_POP_UP,
-} from "../actions/types";
+import { GAME_ON, RESET, SHOW_MODAL } from "../actions/types";
 import { db, auth } from "../firebase";
 import Modal from "./Modal";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { signOut } from "firebase/auth";
 import molespeech from "../images/molespeech.png";
+import Mole from "./Mole";
 
 const Board = () => {
   const dispatch = useDispatch();
-
-  const { activeID, time, score, gameOn, showModal, user, showPopUp } =
-    useSelector((state) => state.game);
+  console.log(auth);
+  const { activeID, time, score, gameOn, showModal, showPopUp } = useSelector(
+    (state) => state.game
+  );
 
   const start = () => {
     dispatch(allActions.decrement(false, activeID));
     dispatch({ type: GAME_ON });
     dispatch({ type: RESET });
-  };
-
-  const handleClick = (e) => {
-    if (e.target.className === "box active") {
-      dispatch({ type: SCORE });
-      e.target.classList.remove("active");
-    }
-    if (e.target.className === "box false" && gameOn) {
-      if (!showPopUp) {
-        const audio = new Audio("/laugh.mp3");
-        audio.play();
-        dispatch({ type: SHOW_POP_UP });
-        setTimeout(() => {
-          dispatch({ type: SHOW_POP_UP });
-        }, 600);
-      }
-    }
   };
 
   useEffect(() => {
@@ -59,15 +38,15 @@ const Board = () => {
     } else if (score >= 10) {
       dispatch(allActions.increaseSpeed(700));
     }
-    // eslint-disable-next-lin
+    // eslint-disable-next-line
   }, [score]);
 
   const submit = async () => {
-    const docRef = await addDoc(collection(db, "leaderBoard"), {
+    await addDoc(collection(db, "leaderBoard"), {
       score,
       timestamp: serverTimestamp(),
-      user: user.name,
-      userImg: user.img,
+      user: auth.currentUser.displayName,
+      userImg: auth.currentUser.photoURL,
     });
   };
 
@@ -78,22 +57,23 @@ const Board = () => {
       })
       .catch((error) => {
         // An error happened.
+        console.log(error);
       });
   };
 
   return (
     <div style={styles.main}>
       {showModal && <Modal />}
-      <img src={user?.img} />
-      <h1>{user?.name}</h1>
-      <h1 style={styles.h1}>Time: {time}</h1>
-      <h1 style={styles.h1}>Score: {score}</h1>
+      <img style={styles.img} src={auth.currentUser.photoURL} alt='user' />
+      <h1>{auth.currentUser.displayName}</h1>
+      <h1>Time: {time}</h1>
+      <h1>Score: {score}</h1>
       <button onClick={start} className={`${gameOn ? "hide" : null} btn`}>
         Start
       </button>
 
       <button onClick={signOutUser} className={`${gameOn ? "hide" : null} btn`}>
-        sign Out
+        Sign Out
       </button>
 
       <button
@@ -104,59 +84,23 @@ const Board = () => {
       </button>
 
       <div style={styles.container}>
-        <div
-          className={`box ${activeID === 1 && "active"}`}
-          onClick={(e) => handleClick(e)}
-        ></div>
-        <div
-          className={`box ${activeID === 2 && "active"}`}
-          onClick={(e) => handleClick(e)}
-        ></div>
-        <div
-          className={`box ${activeID === 3 && "active"}`}
-          onClick={(e) => handleClick(e)}
-        ></div>
-        <div
-          className={`box ${activeID === 4 && "active"}`}
-          onClick={(e) => handleClick(e)}
-        ></div>
-        <div
-          className={`box ${activeID === 5 && "active"}`}
-          onClick={(e) => handleClick(e)}
-        ></div>
-        <div
-          className={`box ${activeID === 6 && "active"}`}
-          onClick={(e) => handleClick(e)}
-        ></div>
-        <div
-          className={`box ${activeID === 7 && "active"}`}
-          onClick={(e) => handleClick(e)}
-        ></div>
-        <div
-          className={`box ${activeID === 8 && "active"}`}
-          onClick={(e) => handleClick(e)}
-        ></div>
-        <div
-          className={`box ${activeID === 9 && "active"}`}
-          onClick={(e) => handleClick(e)}
-        ></div>
-        <div
-          className={`box ${activeID === 10 && "active"}`}
-          onClick={(e) => handleClick(e)}
-        ></div>
-        <div
-          className={`box ${activeID === 11 && "active"}`}
-          onClick={(e) => handleClick(e)}
-        ></div>
-        <div
-          className={`box ${activeID === 12 && "active"}`}
-          onClick={(e) => handleClick(e)}
-        ></div>
+        <Mole id={1} />
+        <Mole id={2} />
+        <Mole id={3} />
+        <Mole id={4} />
+        <Mole id={5} />
+        <Mole id={6} />
+        <Mole id={7} />
+        <Mole id={8} />
+        <Mole id={9} />
+        <Mole id={10} />
+        <Mole id={11} />
+        <Mole id={12} />
       </div>
       <img
         style={!showPopUp ? styles.popup : styles.showPopUp}
         src={molespeech}
-        alt=''
+        alt='mole'
       />
     </div>
   );
@@ -203,7 +147,13 @@ const styles = {
     bottom: 0,
     left: 0,
     transition: "transform 1s",
-    // transform: `translateY(100%)`,
+  },
+  img: {
+    borderRadius: 50,
+    height: 100,
+    width: 100,
+    border: "4px solid #FCBC5C",
+    marginTop: 40,
   },
 };
 
