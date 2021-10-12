@@ -83,7 +83,7 @@ const Board = () => {
         LeaderBoard
       </button>
 
-      <div style={styles.container}>
+      <div className='board__container'>
         <Mole id={1} />
         <Mole id={2} />
         <Mole id={3} />
@@ -111,7 +111,7 @@ const styles = {
     display: "flex",
     width: "100vw",
     height: "100vh",
-    justifyContent: "center",
+    // justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
   },

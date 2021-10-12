@@ -64,7 +64,6 @@ const styles = {
   },
   modalContent: {
     display: "flex",
-    justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
     width: "80%",
@@ -73,6 +72,7 @@ const styles = {
     backgroundColor: "#fefefe",
     height: "80vh",
     borderRadius: 30,
+    overflow: "auto",
   },
   btn: {
     alignSelf: "end",
