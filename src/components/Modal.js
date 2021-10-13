@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { db } from "../firebase";
 import { collection, getDocs, query, orderBy, limit } from "firebase/firestore";
-import BoardItem from "./BoardItem";
+import ModalItem from "./ModalItem";
 
 const Modal = () => {
   const dispatch = useDispatch();
@@ -45,7 +45,7 @@ const Modal = () => {
           Close
         </button>
         {db_scores?.map((item, index) => (
-          <BoardItem item={item} index={index} />
+          <ModalItem item={item} index={index} />
         ))}
       </div>
     </div>

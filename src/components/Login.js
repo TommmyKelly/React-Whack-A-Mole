@@ -29,7 +29,7 @@ const Login = () => {
   return (
     <div style={styles}>
       <button className='btn' onClick={onClick}>
-        Login
+        Login with Google
       </button>
     </div>
   );

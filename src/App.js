@@ -4,26 +4,32 @@ import Layout from "./components/Layout";
 import Login from "./components/Login";
 import { auth } from "./firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import loader from "./images/loader.gif";
 
 function App() {
   const [user, loading, error] = useAuthState(auth);
 
   if (loading) {
+    const styles = {
+      display: "flex",
+      height: "100vh",
+      width: "100vw",
+      justifyContent: "center",
+      alignItems: "center",
+    };
     return (
-      <div>
-        <Layout>
-          <p>Loading</p>
-        </Layout>
-      </div>
+      <Layout>
+        <div style={styles}>
+          <img style={{ height: 200, width: 300 }} src={loader} alt='loader' />
+        </div>
+      </Layout>
     );
   }
   if (error) {
     return (
-      <div>
-        <Layout>
-          <p>Error: {error}</p>
-        </Layout>
-      </div>
+      <Layout>
+        <p>Error: {error}</p>
+      </Layout>
     );
   }
 

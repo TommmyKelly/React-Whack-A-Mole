@@ -1,4 +1,4 @@
-const BoardItem = ({ item, index }) => {
+const ModalItem = ({ item, index }) => {
   return (
     <div style={styles.item__container}>
       <div>Pos: {index + 1}</div>
@@ -6,7 +6,7 @@ const BoardItem = ({ item, index }) => {
         Name: {item.user}, Score: {item.score}
       </div>
 
-      <img style={styles.img} src={item.userImg} />
+      <img style={styles.img} src={item.userImg} alt='user' />
     </div>
   );
 };
@@ -34,4 +34,4 @@ const styles = {
   },
 };
 
-export default BoardItem;
+export default ModalItem;
